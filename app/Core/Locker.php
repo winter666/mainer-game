@@ -17,7 +17,7 @@ class Locker {
     }
 
     public function unlock() {
-        if (!file_exists($this->fullPath)) {
+        if (file_exists($this->fullPath)) {
             unlink($this->fullPath);
         }
     }
