@@ -1,0 +1,16 @@
+{
+    "name": "winter666/miners",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Davut Sergeev",
+            "email": "sergeevdavut@mail.ru"
+        }
+    ],
+    "require": {}
+}
