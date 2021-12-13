@@ -7,3 +7,10 @@ if (!function_exists('event')) {
         (new EventListenProcess($event, $data))->run();
     }
 }
+
+
+if (!function_exists('throw_if')) {
+    function throw_if($expression, \Exception $e) {
+        if ($expression) throw $e;
+    }
+}
