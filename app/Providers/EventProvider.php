@@ -9,7 +9,7 @@ use App\Listeners\HackerAttackEventListener;
 
 class EventProvider {
 
-    public function callStack() {
+    public static function callStack() {
         return [
             ElonMaskTweet::class => ElonMaskEventListener::class,
             HackerAttack::class => HackerAttackEventListener::class
