@@ -7,7 +7,7 @@ class Locker {
     private $fullPath;
 
     public function __construct(string $filename) {
-        $this->fullPath = storage_path($filename . ".lock");
+        $this->fullPath = in_lock_dir($filename . ".lock");
     }
 
     public function lock() {

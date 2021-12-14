@@ -20,3 +20,22 @@ if (!function_exists('storage_path')) {
         return $_SERVER['DOCUMENT_ROOT'] . "/storage/" . $fileName;
     }
 }
+
+if (!function_exists('lock_dir')) {
+    function in_lock_dir(string $fileName): string {
+        return storage_path('locks/' . $fileName);
+    }
+}
+
+if (!function_exists('template')) {
+    function template(string $name, array $data = []) {
+        $path = $_SERVER['DOCUMENT_ROOT'] . "/storage/templates/" . str_replace(".", PATH_SEPARATOR, $name) . ".php";
+        throw_if(!file_exists($path), new \Exception("Template $name not found"));
+        foreach($data as $varName => $varVal) {
+            ${$varName} = $varVal;
+        }
+        ob_start();
+        require $path;
+        return ob_get_clean();
+    }
+}
