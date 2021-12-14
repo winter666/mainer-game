@@ -10,7 +10,12 @@ class Game {
     public $event_period = 0;
 
     public function start() {
-        return (new GameProcess($this->players, $this->event_period))->run();
+        try {
+            return (new GameProcess($this->players, $this->event_period))->run();
+        } catch(\Exception $e) {
+            print($e->getMessage());
+        }
+        return null;
     }
 
     public function withPlayer(string $playerName) {

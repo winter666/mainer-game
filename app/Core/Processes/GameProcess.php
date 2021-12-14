@@ -47,7 +47,9 @@ class GameProcess implements IProcess {
         $locker->lock();
         $this->event_service = new EventInGameService($this->round);
         $this->event_service->setRandomEvent();
-        while($this->round->getCurrent() != self::ROUNDS) {
+        $this->round->init();
+
+        while($this->round->getCurrent() <= self::ROUNDS) {
             $this->OneTik();
             $this->round->up();
         }
@@ -57,20 +59,23 @@ class GameProcess implements IProcess {
     }
 
     private function OneTik() {
+        $gameProgress = new GameProgress();
+
         if ($this->event_start_on === $this->round->getCurrent()) {
             $this->event_service->callEvent();
             $this->event_data = $this->event_service->getEventResult();
         }
         
         foreach($this->players as $player) {
-            $gameProgress = new GameProgress($player);
             $gameProgress->setEventType($this->event_service->getCurrentEventType());
-            $nominal = $this->getNominal($gameProgress);
+            $nominal = $this->getNominal($gameProgress, $player);
             $player->countScore($nominal);
         }
+
+        $this->game_process_steps[] = $gameProgress;
     }
 
-    private function getNominal(GameProgress $gameProgress) {
+    private function getNominal(GameProgress $gameProgress, Player $player) {
         $nominal = rand(1, 1000);
         $diff = 0;
         if ($this->event_start_on === $this->round->getCurrent()) {
@@ -80,7 +85,7 @@ class GameProcess implements IProcess {
             $diff = $actionObject->getDiff();
         }
 
-        $gameProgress->pushGameData($nominal, $this->event_data['coefficient'], $diff, $this->event_data['action']);
+        $gameProgress->pushGameData($this->round->getCurrent(), $player, $nominal, $this->event_data['coefficient'], $diff, $this->event_data['action']);
         return $nominal;
     }
 

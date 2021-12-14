@@ -12,4 +12,8 @@ class Round {
     public function getCurrent() {
         return $this->current;
     }
+
+    public function init() {
+        $this->current = 1;
+    }
 }
