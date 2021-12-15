@@ -2,15 +2,21 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
 
+use App\Core\Log;
 use App\Services\GameResultService;
 use App\Services\GameService;
 
+try {
 $res = GameService::init()
     ->withPLayer('Rick')
     ->withPLayer('Morty')
     ->withPlayer('Pickless')
+    ->withPlayer('Pickless')
+    ->withPlayer('Pickless')
     ->start();
-
+} catch(\Exception $e) {
+    Log::print($e->getMessage());
+}
 if ($res) {
     $players = $res['players'];
     $scores = $res['scores'];

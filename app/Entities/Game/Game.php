@@ -2,6 +2,7 @@
 
 namespace App\Entities\Game;
 
+use App\Core\Log;
 use App\Core\Processes\GameProcess;
 use App\Entities\Player;
 
@@ -13,7 +14,7 @@ class Game {
         try {
             return (new GameProcess($this->players, $this->event_period))->run();
         } catch(\Exception $e) {
-            print($e->getMessage());
+            Log::print($e->getMessage());
         }
         return null;
     }

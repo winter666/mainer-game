@@ -19,6 +19,7 @@ class GameProcess implements IProcess {
     private $event_service;
     private $event_data = [];
     private $min_players_on_game = 2;
+    private $max_players_on_game = 4;
     private $round;
 
     private $game_process_steps = [];
@@ -26,13 +27,13 @@ class GameProcess implements IProcess {
     public function __construct(array $players, int $eventDotStart = 0) {
         $this->event_start_on = $eventDotStart;
 
-        if (!empty($players) && count ($players) >= $this->min_players_on_game) {
+        if (!empty($players) && (count ($players) >= $this->min_players_on_game && count($players) <= $this->max_players_on_game)) {
             foreach($players as $player) {
                 throw_if(!($player instanceof Player), new Exception("All players must be instance of App\Entities\PLayer"));
                 $this->players[] = $player;
             }
         } else {
-            throw new Exception("Players must be of total count >= $this->min_players_on_game");
+            throw new Exception("Players total count must equals or greater than $this->min_players_on_game, or equals or lesser than $this->max_players_on_game");
         }
 
         $this->round = new Round();
