@@ -26,6 +26,7 @@ class Game {
 
     public function withEventPeriod(int $period) {
         $this->event_period = $period;
+        return $this;
     }
 
 }
