@@ -4,13 +4,15 @@ namespace App\Services\Actions;
 
 class Increase {
 
-    private $difference;
+    private $difference = 0;
 
-    public function process() {
-        return 1;
+    public function process($nominal) {
+        $res = $nominal * 10;
+        $this->difference = $res - $nominal;
+        return $res;
     }
 
     public function getDiff() {
-        return 0;
+        return $this->difference;
     }
 }

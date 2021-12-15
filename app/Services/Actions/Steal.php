@@ -4,13 +4,15 @@ namespace App\Services\Actions;
 
 class Steal {
 
-    private $difference;
+    private $difference = 0;
 
-    public function process() {
-        return 1;
+    public function process($nominal) {
+        $res = floor($nominal / 2);
+        $this->difference = $nominal - $res;
+        return $res;
     }
 
     public function getDiff() {
-        return 0;
+        return $this->difference;
     }
 }
