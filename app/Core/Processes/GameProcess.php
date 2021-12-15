@@ -60,7 +60,8 @@ class GameProcess implements IProcess {
                 $this->round->up();
             }
         } catch (\Exception $e) {
-            Log::print($e->getMessage());
+            $locker->unlock();
+            throw new Exception($e->getMessage());
         }
 
         $locker->unlock();
