@@ -2,17 +2,13 @@
 
 namespace App\Services\Actions;
 
-class Increase {
+class Increase extends Action implements IAction{
 
-    private $difference = 0;
-
-    public function process($nominal) {
+    public function process(array $data) {
+        $nominal = $data['nominal'];
         $res = $nominal * 10;
         $this->difference = $res - $nominal;
         return $res;
     }
 
-    public function getDiff() {
-        return $this->difference;
-    }
 }

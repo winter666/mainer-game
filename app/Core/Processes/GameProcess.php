@@ -4,6 +4,7 @@ namespace App\Core\Processes;
 
 use App\Core\Interfaces\IProcess;
 use App\Core\Locker;
+use App\Core\Log;
 use App\Entities\Game\GameProgress;
 use App\Services\GameResultService;
 use App\Entities\Player;
@@ -53,9 +54,13 @@ class GameProcess implements IProcess {
         $this->event_service = new EventInGameService($this->round);
         $this->round->init();
 
-        while($this->round->getCurrent() <= self::ROUNDS) {
-            $this->OneTik();
-            $this->round->up();
+        try {
+            while($this->round->getCurrent() <= self::ROUNDS) {
+                $this->OneTik();
+                $this->round->up();
+            }
+        } catch (\Exception $e) {
+            Log::print($e->getMessage());
         }
 
         $locker->unlock();
@@ -86,7 +91,7 @@ class GameProcess implements IProcess {
         if (in_array($this->round->getCurrent(), $this->event_periods)) {
             $actionClass = $this->event_action;
             $actionObject = new $actionClass();
-            $postEventNominal = $actionObject->process($originNominal);
+            $postEventNominal = $actionObject->process(['nominal' => $originNominal]);
             $diff = $actionObject->getDiff();
         }
 
