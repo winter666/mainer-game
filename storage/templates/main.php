@@ -8,10 +8,15 @@
                 background-color: black;
                 color: #ffffff;
             }
+            .records {
+                display: flex;
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
         </style>
     </head>
     <body>
         <h1>Maining Game</h1>
-        <?= template('table', compact('players', 'table')); ?>
+        <?= template('records', compact('players', 'table', 'scores')) ?>
     </body>
 </html>

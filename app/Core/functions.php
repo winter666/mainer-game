@@ -29,7 +29,7 @@ if (!function_exists('lock_dir')) {
 
 if (!function_exists('template')) {
     function template(string $name, array $data = []) {
-        $path = $_SERVER['DOCUMENT_ROOT'] . "/storage/templates/" . str_replace(".", PATH_SEPARATOR, $name) . ".php";
+        $path = $_SERVER['DOCUMENT_ROOT'] . "/storage/templates/" . str_replace(".", DIRECTORY_SEPARATOR, $name) . ".php";
         throw_if(!file_exists($path), new \Exception("Template $name not found"));
         foreach($data as $varName => $varVal) {
             ${$varName} = $varVal;

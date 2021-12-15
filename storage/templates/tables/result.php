@@ -1,3 +1,5 @@
+<h2>Game Progress</h2>
+
 <table  width="500">
     <thead>
         <tr>

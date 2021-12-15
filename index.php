@@ -13,13 +13,11 @@ $res = GameService::init()
 
 if ($res) {
     $players = $res['players'];
-    // $scores = $res['scores'];
-    // $log = $res['log'];
-    // $list = $res['list'];
+    $scores = $res['scores'];
     $gameProgress = $res['game_progress'];
     $table = GameResultService::serializeResultTable($gameProgress);
 
-    echo template('main', compact('players', 'table'));
+    echo template('main', compact('players', 'table', 'scores'));
     
 } else {
     die();
