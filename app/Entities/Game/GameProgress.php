@@ -17,7 +17,7 @@ class GameProgress {
         int $roundNum, 
         Player $player, 
         int $originNominal, 
-        ?int $coefficient = 0, 
+        int $eventNominal = 0, 
         ?int $diff = 0, 
         ?string $eventAction = 'None'
         ) {
@@ -25,8 +25,9 @@ class GameProgress {
         $this->round_data[$player->name] = [
             'round' => $roundNum,
             'player' => $player,
-            'nominal' => $originNominal,
-            'coefficient' => $coefficient,
+            'origin_nominal' => $originNominal,
+            'event_nominal' => $eventNominal,
+            'event_type' => $this->event_type,
             'diff' => $diff,
             'action' => $eventAction
         ];

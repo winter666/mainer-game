@@ -15,17 +15,17 @@ class GameProcess implements IProcess {
     private const LOCK_FILE_NAME = "game_process";
     private const ROUNDS = 365;
     private $players = [];
-    private $event_start_on = 0;
+    private $event_periods = [];
     private $event_service;
-    private $event_data = [];
+    private $event_action;
     private $min_players_on_game = 2;
     private $max_players_on_game = 4;
     private $round;
 
     private $game_process_steps = [];
 
-    public function __construct(array $players, int $eventDotStart = 0) {
-        $this->event_start_on = $eventDotStart;
+    public function __construct(array $players, array $eventPeriods = []) {
+        $this->event_periods = $eventPeriods;
 
         if (!empty($players) && (count ($players) >= $this->min_players_on_game && count($players) <= $this->max_players_on_game)) {
             foreach($players as $player) {
@@ -51,7 +51,6 @@ class GameProcess implements IProcess {
 
         $locker->lock();
         $this->event_service = new EventInGameService($this->round);
-        $this->event_service->setRandomEvent();
         $this->round->init();
 
         while($this->round->getCurrent() <= self::ROUNDS) {
@@ -65,10 +64,10 @@ class GameProcess implements IProcess {
 
     private function OneTik() {
         $gameProgress = new GameProgress();
-
-        if ($this->event_start_on === $this->round->getCurrent()) {
+        if (in_array($this->round->getCurrent(), $this->event_periods)) {
+            $this->event_service->setRandomEvent();
             $this->event_service->callEvent();
-            $this->event_data = $this->event_service->getEventResult();
+            $this->event_action = $this->event_service->getEventResult();
         }
         
         foreach($this->players as $player) {
@@ -81,17 +80,18 @@ class GameProcess implements IProcess {
     }
 
     private function getNominal(GameProgress $gameProgress, Player $player) {
-        $nominal = rand(1, 1000);
+        $originNominal = rand(1, 1000);
+        $postEventNominal = 0;
         $diff = 0;
-        if ($this->event_start_on === $this->round->getCurrent()) {
-            $actionClass = $this->event_data['action'];
+        if (in_array($this->round->getCurrent(), $this->event_periods)) {
+            $actionClass = $this->event_action;
             $actionObject = new $actionClass();
-            $nominal = $actionObject->process($nominal);
+            $postEventNominal = $actionObject->process($originNominal);
             $diff = $actionObject->getDiff();
         }
 
-        $gameProgress->pushGameData($this->round->getCurrent(), $player, $nominal, $this->event_data['coefficient'], $diff, $this->event_data['action']);
-        return $nominal;
+        $gameProgress->pushGameData($this->round->getCurrent(), $player, $originNominal, $postEventNominal, $diff, $this->event_data['action']);
+        return ($postEventNominal > 0) ? $postEventNominal : $originNominal;
     }
 
     private function showResults() {

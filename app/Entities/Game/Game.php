@@ -8,11 +8,11 @@ use App\Entities\Player;
 
 class Game {
     public $players = [];
-    public $event_period = 0;
+    public $event_periods = [];
 
     public function start() {
         try {
-            return (new GameProcess($this->players, $this->event_period))->run();
+            return (new GameProcess($this->players, $this->event_periods))->run();
         } catch(\Exception $e) {
             Log::print($e->getMessage());
         }
@@ -25,7 +25,7 @@ class Game {
     }
 
     public function withEventPeriod(int $period) {
-        $this->event_period = $period;
+        $this->event_periods[] = $period;
         return $this;
     }
 

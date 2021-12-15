@@ -14,6 +14,11 @@ class EventInGameService {
         self::ELON_MASK_TWEET_EVENT,
         self::HACKER_ATTACK_EVENT
     ];
+    
+    public const HUMAN_REDABLE_EVENT_NAMES = [
+        self::ELON_MASK_TWEET_EVENT => "Elon Mask Tweet",
+        self::HACKER_ATTACK_EVENT => "Hacker Attack"
+    ];
 
     private $event_type = '';
     private $event_result = 0;

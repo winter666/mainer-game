@@ -1,6 +1,6 @@
 <h2>Game Progress</h2>
 
-<table  width="500">
+<table >
     <thead>
         <tr>
             <?php foreach ($table['t_heads'] as $tHead): ?>
@@ -13,7 +13,14 @@
             <tr>
                 <td><?= $tBody['round'] ?></td>
                 <?php foreach ($tBody['players_data'] as $playersData): ?>
-                    <td><?= $playersData['player'] ?>: <?= $playersData['score'] ?></td>
+                    <td>
+                        <div>
+                            <b>Original nominal:</b> <?= $playersData['origin_score'] ?>
+                        </div>
+                        <div>
+                            <b>After event nominal:</b> <?= $playersData['event_score'] > 0 ? $playersData['event_score'] : "no events happened" ?>
+                        </div>
+                    </td>
                 <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>    

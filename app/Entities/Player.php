@@ -5,7 +5,7 @@ namespace App\Entities;
 class Player {
     public $name;
     private $score;
-    private $step_score = [];
+    // private $step_score = [];
 
     public function __construct(string $name)
     {
@@ -17,9 +17,9 @@ class Player {
         $this->score += $score;
     }
 
-    public function getScoreList() {
-        return $this->step_score;
-    }
+    // public function getScoreList() {
+    //     return $this->step_score;
+    // }
     
     public function getScore() {
         return $this->score;

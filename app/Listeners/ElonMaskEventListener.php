@@ -10,11 +10,6 @@ use App\Services\Actions\Increase;
 class ElonMaskEventListener extends Listener implements IListener {
 
     public function handle() {
-        $modificator = ($this->data->getCurrent() % 2 == 0) ? Increase::class : Decrease::class;
-
-        return [
-            'coefficient' => 10,
-            'action' => $modificator
-        ];
+        return ($this->data->getCurrent() % 2 == 0) ? Increase::class : Decrease::class;
     }
 }

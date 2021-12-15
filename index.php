@@ -11,18 +11,20 @@ $gameResult = GameService::init()
     ->withPLayer('Rick')
     ->withPLayer('Morty')
     ->withPlayer('Summer')
+    ->withEventPeriod(rand(1, 365))
+    ->withEventPeriod(14)
+    ->withEventPeriod(289)
     ->start();
 } catch(\Exception $e) {
     Log::print($e->getMessage());
 }
 if ($gameResult) {
-    $res = $gameResult->getResult();
+    $res = $gameResult->getResults();
     $players = $res['players'];
     $scores = $res['scores'];
-    $gameProgress = $res['game_progress'];
-    $table = $gameResult->serializeResultTable();
-
-    echo template('main', compact('players', 'table', 'scores'));
+    $table = $gameResult->getResultTable();
+    $event = $gameResult->getEventResults();
+    echo template('main', compact('players', 'table', 'scores', 'event'));
 } else {
     echo template('somethings-wrong');
 }
