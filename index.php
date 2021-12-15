@@ -10,9 +10,7 @@ try {
 $res = GameService::init()
     ->withPLayer('Rick')
     ->withPLayer('Morty')
-    ->withPlayer('Pickless')
-    ->withPlayer('Pickless')
-    ->withPlayer('Pickless')
+    ->withPlayer('Summer')
     ->start();
 } catch(\Exception $e) {
     Log::print($e->getMessage());

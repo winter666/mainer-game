@@ -30,6 +30,10 @@ class GameProcess implements IProcess {
         if (!empty($players) && (count ($players) >= $this->min_players_on_game && count($players) <= $this->max_players_on_game)) {
             foreach($players as $player) {
                 throw_if(!($player instanceof Player), new Exception("All players must be instance of App\Entities\PLayer"));
+                foreach($this->players as $internalPlayer) {
+                    throw_if($internalPlayer->name == $player->name, new \Exception("Player name must be a unique value"));
+                }
+
                 $this->players[] = $player;
             }
         } else {
