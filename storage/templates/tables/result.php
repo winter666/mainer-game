@@ -3,18 +3,17 @@
 <table  width="500">
     <thead>
         <tr>
-            <th>Round №</th>
-                <?php foreach ($players as $player): ?>
-            <th> <?= $player; ?> </th>
+            <?php foreach ($table['t_heads'] as $tHead): ?>
+                <th> <?= $tHead; ?> </th>
             <?php endforeach; ?>
         </tr>
     </thead>
     <tbody style="text-align: center;">
-        <?php foreach ($table as $round => $data): ?>        
+        <?php foreach ($table['t_body'] as $tBody): ?>        
             <tr>
-                <td><?= $round; ?></td>
-                <?php foreach ($data as $key => $tableD): ?>
-                    <td><?= $key ?>: <?= $tableD ?></td>
+                <td><?= $tBody['round'] ?></td>
+                <?php foreach ($tBody['players_data'] as $playersData): ?>
+                    <td><?= $playersData['player'] ?>: <?= $playersData['score'] ?></td>
                 <?php endforeach; ?>
             </tr>
         <?php endforeach; ?>    

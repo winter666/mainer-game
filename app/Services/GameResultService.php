@@ -10,6 +10,8 @@ class GameResultService {
     private $event_type;
     private $event;
 
+    private $result = [];
+
     public function __construct($players, array $gameProgress)
     {
         $this->players = $players;
@@ -29,7 +31,7 @@ class GameResultService {
     }
 
     public function getResult() {
-        return $this->serializeResult();
+        return $this->result;
     }
 
     public function serializeResult() {
@@ -40,7 +42,10 @@ class GameResultService {
         $game_progress = $this->game_progress_array;
 
         foreach ($this->players as $player) {
-            $scores [$player->name] = $player->getScore();
+            $scoresTmp [] = [
+                'player' => $player->name,
+                'score' => $player->getScore()
+            ];
             $players[] = $player->name;
             $log = array_merge($log, array_map(function($score) use ($player) {
                 return [
@@ -56,17 +61,43 @@ class GameResultService {
             }, $player->getScoreList());
         }
 
-        return compact('players', 'scores', 'log', 'list', 'game_progress');
+        $scores = $this->setScoreRaiting($scoresTmp);
+        $this->result = compact('players', 'scores', 'log', 'list', 'game_progress');
+
+        return $this;
     }
 
-    public static function serializeResultTable(array $gameProgress) {
-        $tableDs = [];
-        foreach($gameProgress as $step) {
-            $tableDs[$step->getRoundNum()] = array_map(function($roundData) {
-                return $roundData['nominal'];
-            }, $step->getRoundData());
+    public function serializeResultTable() {
+        $tableHeads = ["Round #"];
+        $tableBody = [];
+        foreach($this->result['players'] as $player) {
+            $tableHeads[] = $player;
         }
 
-        return $tableDs;
+        foreach($this->game_progress_array as $step) {
+            $tableBody[] = ["round" => $step->getRoundNum()];
+            $key = array_key_last($tableBody);
+            foreach($step->getRoundData() as $roundData) {
+                $tableBody[$key]["players_data"][] = [
+                    "player" => $roundData['player']->name, 
+                    "score" => $roundData['nominal']
+                ];
+            }
+        }
+
+        return [
+            't_heads' => $tableHeads,
+            't_body' => $tableBody
+        ];
     }
+
+    private function setScoreRaiting($scores) {
+        arr_sort($scores, 'score', "DESC");
+        foreach($scores as $key => $score) {
+            $scores[$key]['raiting'] = $key + 1;
+        }
+
+        return $scores;
+    }
+
 }

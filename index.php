@@ -7,7 +7,7 @@ use App\Services\GameResultService;
 use App\Services\GameService;
 
 try {
-$res = GameService::init()
+$gameResult = GameService::init()
     ->withPLayer('Rick')
     ->withPLayer('Morty')
     ->withPlayer('Summer')
@@ -15,11 +15,12 @@ $res = GameService::init()
 } catch(\Exception $e) {
     Log::print($e->getMessage());
 }
-if ($res) {
+if ($gameResult) {
+    $res = $gameResult->getResult();
     $players = $res['players'];
     $scores = $res['scores'];
     $gameProgress = $res['game_progress'];
-    $table = GameResultService::serializeResultTable($gameProgress);
+    $table = $gameResult->serializeResultTable();
 
     echo template('main', compact('players', 'table', 'scores'));
 } else {

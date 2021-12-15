@@ -39,3 +39,20 @@ if (!function_exists('template')) {
         return ob_get_clean();
     }
 }
+
+if (!function_exists('arr_sort')) {
+    function arr_sort(&$arr, $field, $flag = "ASC") {
+        usort($arr, function($a, $b) use ($field, $flag) {
+            if ($a[$field] == $b[$field]) {
+                return 0;
+            }
+
+            switch ($flag) {
+                case "ASC":
+                    return ($a[$field] < $b[$field]) ? -1 : 1;
+                case "DESC":
+                    return ($a[$field] > $b[$field]) ? -1 : 1;
+            }
+        });
+    }
+}

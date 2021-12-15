@@ -96,8 +96,7 @@ class GameProcess implements IProcess {
 
     private function showResults() {
         $service = new GameResultService($this->players, $this->game_process_steps);
-        $service->getResult();
-        return $service->getResult();
+        return $service->serializeResult();
     }
 
 }
