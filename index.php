@@ -18,7 +18,6 @@ if ($res) {
     $table = GameResultService::serializeResultTable($gameProgress);
 
     echo template('main', compact('players', 'table', 'scores'));
-    
 } else {
-    die();
+    echo template('somethings-wrong');
 }
