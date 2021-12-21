@@ -21,6 +21,18 @@ if (!function_exists('storage_path')) {
     }
 }
 
+if (!function_exists('sources_path')) {
+    function sources_path(string $fileName): string {
+        return $_SERVER['DOCUMENT_ROOT'] . "/sources/" . $fileName;
+    }
+}
+
+if (!function_exists('template_path')) {
+    function template_path(string $fileName): string {
+        return sources_path("templates/" . $fileName);
+    }
+}
+
 if (!function_exists('lock_dir')) {
     function in_lock_dir(string $fileName): string {
         return storage_path('locks/' . $fileName);
@@ -29,7 +41,7 @@ if (!function_exists('lock_dir')) {
 
 if (!function_exists('template')) {
     function template(string $name, array $data = []) {
-        $path = $_SERVER['DOCUMENT_ROOT'] . "/storage/templates/" . str_replace(".", DIRECTORY_SEPARATOR, $name) . ".php";
+        $path = template_path(str_replace(".", DIRECTORY_SEPARATOR, $name) . ".php");
         throw_if(!file_exists($path), new \Exception("Template $name not found"));
         foreach($data as $varName => $varVal) {
             ${$varName} = $varVal;
